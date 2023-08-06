@@ -28,6 +28,25 @@ app.get('/prices', async (req, res) => {
     }
 });
 
+app.post('/webhook/tradingview', (req, res) => {
+    try {
+        // Extract the data from the request body
+        const alertData = req.body;
+
+        // Process the price alert data
+        // For example, log the data or take appropriate action based on the alert
+
+        console.log('Received TradingView price alert:');
+        console.log(alertData);
+
+        // Respond with a success message
+        res.json({ message: 'Received TradingView price alert successfully' });
+    } catch (error) {
+        // Handle any errors
+        res.status(500).json({ error: 'Failed to process the price alert' });
+    }
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
