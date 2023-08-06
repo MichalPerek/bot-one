@@ -20,6 +20,7 @@ app.get('/prices', async (req, res) => {
         const btcPrice = response.data.bitcoin.usd;
         const ethPrice = response.data.ethereum.usd;
 
+        console.log(`BTC: ${btcPrice}, ETH: ${ethPrice}`)
         res.json({ btcPrice, ethPrice });
     } catch (error) {
         console.log('error', error)
