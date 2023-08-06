@@ -35,7 +35,7 @@ app.post('/webhook/tradingview', (req, res) => {
 
         // Process the price alert data
         // For example, log the data or take appropriate action based on the alert
-
+console.log(req)
         console.log('Received TradingView price alert:');
         console.log(alertData);
 
