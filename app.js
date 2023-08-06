@@ -1,25 +1,33 @@
-const cron = require('node-cron');
+const express = require('express');
 const axios = require('axios');
 
-// Define the cron schedule for fetching data every 15 seconds
-const cronExpression = '*/15 * * * * *';
+const app = express();
+const PORT = 3000;
 
-// Create the cron job
-const cronJob = cron.schedule(cronExpression, async () => {
+// Endpoint to retrieve prices of BTC and ETH from CoinGecko
+app.get('/prices', async (req, res) => {
     try {
-        const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const response = await axios.get(
+            'https://api.coingecko.com/api/v3/simple/price',
+            {
+                params: {
+                    ids: 'bitcoin,ethereum, cardano',
+                    vs_currencies: 'usd',
+                },
+            }
+        );
+
         const btcPrice = response.data.bitcoin.usd;
-        console.log(`BTC price: $${btcPrice}`);
+        const ethPrice = response.data.ethereum.usd;
+
+        res.json({ btcPrice, ethPrice });
     } catch (error) {
-        console.error('Error fetching BTC price:', error.message);
+        console.log('error', error)
+        res.status(500).json({ error: 'Failed to fetch prices from CoinGecko' });
     }
 });
 
-// Start the cron job
-cronJob.start();
-
-// Optionally, stop the cron job after a certain time (e.g., 1 minute in this example)
-setTimeout(() => {
-    cronJob.stop();
-    console.log('Cron job stopped.');
-}, 60 * 1000); // 1 minute in milliseconds
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
