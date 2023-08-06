@@ -4,6 +4,8 @@ const axios = require('axios');
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
+
 // Endpoint to retrieve prices of BTC and ETH from CoinGecko
 app.get('/prices', async (req, res) => {
     try {
@@ -35,7 +37,6 @@ app.post('/webhook/tradingview', (req, res) => {
 
         // Process the price alert data
         // For example, log the data or take appropriate action based on the alert
-console.log(req)
         console.log('Received TradingView price alert:');
         console.log(alertData);
 
